@@ -1,19 +1,32 @@
-// Fenwick Tree (Binary Indexed Tree)
-// 1 - based indexing 
-struct BIT {
-    long long n;
-    vector<long long> bit;
-    FenwickTree(int n) : bit(n), n(n) {}
+class FBIT
+{
+    vector<long long int> fr;
+    long long int n;
 
-    // v[pos] += dif
-    void update(int pos, long long dif) { 
-        for (; pos < n; pos += (pos & -pos)) bit[pos] += dif;
+public:
+    FBIT(long long int n)
+    {
+        fr.resize(n, 0);
+        this->n = n;
     }
 
-    // sum of values in [1, pos]
-    long long query(int pos) { 
-        long long res = 0;
-        for (; pos > 0; pos -= (pos & -pos)) res += bit[pos];
-        return res;
+    void update(long long int id, long long int val)
+    {
+        while (id < n)
+        {
+            fr[id] = val;
+            id += (id & (-id));
+        }
+    }
+    long long int query(long long int id, long long int val)
+    {
+        long long int sum = 0;
+        while (id > 0)
+        {
+            sum += fr[id];
+            id -= (id & (-id));
+        }
+
+        return sum;
     }
 };
